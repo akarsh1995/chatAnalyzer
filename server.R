@@ -36,7 +36,18 @@ shinyServer(function(input, output) {
       as.data.frame(p,stringsAsFactors =F)
     })
   })
-
+  
+  output$sun_burst<-renderSund2b({
+    validate(
+      need(input$chatfile != "", "Please select the chat file")
+    )
+    validate(
+      need(input$namesok, "Please click Ok")
+    )
+    p <- chat2()
+    sunburst.make(x = p)
+  })
+  
   output$names<-renderText({
     validate(
       need(input$chatfile != "", "Please select the chat file")
@@ -59,6 +70,8 @@ shinyServer(function(input, output) {
     as.character(p)
   })
   
+  
+  
   output$total_letter_count<-renderText({
     validate(
       need(input$chatfile != "", "Please select the chat file")
@@ -66,7 +79,7 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>% as.data.frame()
+    p<-chat2()
     p<-chat_letter_count(p$text)
     as.character(p)
   })

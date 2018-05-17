@@ -1,99 +1,81 @@
 ######data clean function
 library(dplyr)
 library(stringr)
-library(lubridate)
+library(data.table)
 
 WClean <- function(x) {
-  pathof_file <- x
-  chat <- readLines(pathof_file) %>% as.data.frame(stringsAsFactors = F)
+  
+  # Reading and initial cleaning phase
+  path_of_file<-x
+  chat <- readLines(path_of_file)%>% 
+    as.data.frame(stringsAsFactors = F)
+  
   if ("" %in% chat[, 1]) {
-    chat <- chat[-which(chat[, 1] %in% ""), 1] %>% as.data.frame()
+    chat <- chat[-which(chat[, 1] %in% ""), 1]%>% 
+      as.data.frame()
   }
+  
   if (stringr::str_detect(chat[1, 1], "end-to-end")) {
-    chat <- chat[-1, ] %>% as.data.frame(stringsAsFactors = F)
+    chat <- chat[-1, ]%>% 
+      as.data.frame(stringsAsFactors = F)
   }
-  logicalval <-
-    (
-      stringr::str_detect(chat[1, 1], " - ") &
-        stringr::str_detect(chat[1, 1], ": ") &
-        stringr::str_detect(chat[1, 1], "\\d:\\d")
-    )
   
+  chat <- apply(chat, 2, as.character)%>% 
+    as.data.frame(stringsAsFactors = F)
   
-  chat <- apply(chat, 2, as.character) %>% as.data.frame(stringsAsFactors = F)
+  ####################################################################
   
+  # splitting with dates in conjunction with subsequent line (conversation thread's part)
   
-  # splitting with dates conjunction with next line
-  if (logicalval) {
-    chat <- apply(chat, 1, function(x) {
-      (
-        stringr::str_detect(x, " - ") &
-          stringr::str_detect(x, ": ") &
-          stringr::str_detect(x, "\\d:\\d")
-      )
-    }) %>% cumsum %>% split(x = chat[, 1])
-    length.list <- (unlist(lapply(chat, length)) > 1) %>% which()
-    chat[length.list] <-
-      sapply(chat[length.list], function(x) {
-        paste(x, collapse = " ")
-      })
-    chat <- as.data.frame(chat) %>% t()
-    chat <- tstrsplit(chat[, 1], " - ", names = T) %>% as.data.frame()
-    chat2 <- tstrsplit(chat$V2, split = ": ") %>% as.data.frame()
-    chat[, 1] <- gsub(",", "", chat[, 1])
-    if (dmy_hms(chat[, 1], quiet = T) %>% is.na() %>% sum() == 0) {
-      chat[, 1] <- dmy_hms(chat[, 1], quiet = T)
-    } else if (mdy_hm(chat[, 1], quiet = T) %>% is.na() %>% sum() == 0) {
-      chat[, 1] <- mdy_hm(chat[, 1], quiet = T)
-    } else if (dmy_hm(chat[, 1], quiet = T) %>% is.na() %>% sum() == 0) {
-      chat[, 1] <- dmy_hm(chat[, 1], quiet = T)
-    }
-  } else {
-    chat <- apply(chat, 1, function(x) {
-      (
-        stringr::str_detect(x, "[[:alpha:]]:") &
-          stringr::str_detect(x, "- ") &
-          stringr::str_detect(x, "^\\d\\d")
-      )
-    }) %>% cumsum %>% split(x = chat[, 1])
-    length.list <- (unlist(lapply(chat, length)) > 1) %>% which()
-    chat[length.list] <-
-      sapply(chat[length.list], function(x) {
-        paste(x, collapse = " ")
-      })
-    chat <- as.data.frame(chat) %>% t()
-    alphamatch <-
-      stringr::str_extract(string = chat[1, 1], "[[:alpha:]]:")
-    alphamatch <- substr(alphamatch, 1, 1)
-    chat <-
-      tstrsplit(chat[, 1], paste(alphamatch, ":", sep = ""), names = T) %>% as.data.frame()
-    chat2 <- tstrsplit(chat$V2, split = "- ") %>% as.data.frame()
-    chat[, 1] <- paste(chat[, 1], paste(alphamatch) , sep = "")
-    chat[, 1] <- lubridate::dmy_hms(chat[, 1])
-    
+  chat <- apply(chat, 1, function(x) {(stringr::str_detect(x, " - ") &
+                                         stringr::str_detect(x, ": ") &
+                                         stringr::str_detect(x, "\\d:\\d")
+  )})%>% 
+    cumsum%>% 
+    split(x = chat[, 1])
+  ####################################################################
+  
+  # merging the lines separated by "\n" of same convarsation's thread
+  
+  length.list <- (unlist(lapply(chat, length)) > 1)%>% 
+    which()
+  
+  chat[length.list] <- sapply(chat[length.list], function(x) {
+    paste(x, collapse = " ")
+  })
+  
+  chat <- as.data.frame(chat)%>%
+    t()
+  ####################################################################
+  
+  # Splitting date, sender/reciepient and threads column
+  chat <- regmatches(chat[,1], regexpr(" - ", chat[,1]),invert = T)%>%
+    as.data.frame()%>%t()
+  
+  chat <- cbind(chat[,1],
+                regmatches(chat[,2], regexpr(": ", chat[,2]),invert = T)%>%
+                  as.data.frame()%>%t())%>%as.data.frame()
+  
+  ####################################################################
+  
+  # Three checks if all the dates, of first column, are parsed.
+  
+  if (dmy_hms(chat[, 1], quiet = T) %>% is.na() %>% sum() == 0) {  
+    chat[, 1] <- dmy_hms(chat[, 1], quiet = T)
+  } else if (mdy_hm(chat[, 1], quiet = T) %>% is.na() %>% sum() == 0) {
+    chat[, 1] <- mdy_hm(chat[, 1], quiet = T)
+  } else if (dmy_hm(chat[, 1], quiet = T) %>% is.na() %>% sum() == 0) {
+    chat[, 1] <- dmy_hm(chat[, 1], quiet = T)
+  } else { 
+    stop ("all dates could not be parsed.")
   }
-  ### merging the list and creating data frme
+  ####################################################################
   
-  chat <- data.frame(V1 = chat[, 1], chat2)
-  rm(chat2)
-  chat <-
-    apply(chat, 2, as.character) %>% as.data.frame(stringsAsFactors = F)
-  
-  if (ncol(chat) > 3) {
-    chat[4:ncol(chat)] <- lapply(chat[4:ncol(chat)], function(x) {
-      x[which(is.na(x))] <- ""
-      x
-    }) %>% as.data.frame(stringsAsFactors = F)
-    for (i in 4:ncol(chat)) {
-      chat[, 3] <- paste(chat[, 3], chat[, i], sep = " ")
-    }
-    chat[4:ncol(chat)] <- NULL
-    chat[, 3] <- stringr::str_trim(chat[, 3], side = "right")
-  }
   chat$V1 <- as.POSIXlt(chat$V1)
   names(chat) <- c("V1", "V3", "text")
   return(as.data.frame(chat))
 }
+
 ###### counts first tab
 ### word count (returns numeric value)
 chat_word_count<- function(x=chat$text) {
@@ -940,3 +922,16 @@ getTermMatrix<-memoise(function(x=chat$text){
   m = as.matrix(myDTM)
   sort(rowSums(m), decreasing = T)
 })
+
+
+sunburst.make<- function(x = chat){
+  data.frame(V1 = paste(x$V3,
+                        x$V1%>%format("%Y"),
+                        x$V1%>%format("%b"),
+                        x$V1%>%format("%U")%>%paste("week"),
+                        x$V1%>%format("%A"),
+                        sep = "-"))%>%
+    group_by(V1)%>%
+    count()%>%
+    sund2b()
+}

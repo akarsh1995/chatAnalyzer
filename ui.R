@@ -1,5 +1,4 @@
 library(plotly)
-library(magrittr)
 library(lubridate)
 library(RColorBrewer)
 library(shinythemes)
@@ -7,6 +6,10 @@ library(data.table)
 library(pander)
 library(shiny)
 library(wordcloud2)
+library(rdrop2)
+library(digest)
+library(sunburstR)
+
  shinyUI( 
    tagList
 (
@@ -29,6 +32,11 @@ library(wordcloud2)
              ),
              mainPanel(
                tabsetPanel(
+                 tabPanel("Sunburst Analysis",
+                          fixedRow(h2("Sunburst analysis", align = "center")),
+                          hr(),
+                          sund2bOutput("sun_burst")%>%h1(align = "center")
+                          ),
                  tabPanel("Chat S",
                           fixedRow(
                             column(width= 6,h3("Total Message Count", align = "center"),textOutput("total_message_count")%>%h4(align = "center",style= "color:blue")),
