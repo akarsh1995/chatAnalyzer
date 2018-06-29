@@ -6,7 +6,6 @@ library(data.table)
 library(pander)
 library(shiny)
 library(wordcloud2)
-library(rdrop2)
 library(digest)
 library(sunburstR)
 
