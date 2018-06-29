@@ -3,77 +3,33 @@ library(dplyr)
 library(stringr)
 library(data.table)
 
-WClean <- function(x) {
-  
-  # Reading and initial cleaning phase
-  path_of_file<-x
-  chat <- readLines(path_of_file)%>% 
-    as.data.frame(stringsAsFactors = F)
-  
-  if ("" %in% chat[, 1]) {
-    chat <- chat[-which(chat[, 1] %in% ""), 1]%>% 
-      as.data.frame()
-  }
-  
-  if (stringr::str_detect(chat[1, 1], "end-to-end")) {
-    chat <- chat[-1, ]%>% 
-      as.data.frame(stringsAsFactors = F)
-  }
-  
-  chat <- apply(chat, 2, as.character)%>% 
-    as.data.frame(stringsAsFactors = F)
-  
-  ####################################################################
-  
-  # splitting with dates in conjunction with subsequent line (conversation thread's part)
-  
-  chat <- apply(chat, 1, function(x) {(stringr::str_detect(x, " - ") &
-                                         stringr::str_detect(x, ": ") &
-                                         stringr::str_detect(x, "\\d:\\d")
-  )})%>% 
-    cumsum%>% 
-    split(x = chat[, 1])
-  ####################################################################
-  
-  # merging the lines separated by "\n" of same convarsation's thread
-  
-  length.list <- (unlist(lapply(chat, length)) > 1)%>% 
-    which()
-  
-  chat[length.list] <- sapply(chat[length.list], function(x) {
-    paste(x, collapse = " ")
-  })
-  
-  chat <- as.data.frame(chat)%>%
-    t()
-  ####################################################################
-  
-  # Splitting date, sender/reciepient and threads column
-  chat <- regmatches(chat[,1], regexpr(" - ", chat[,1]),invert = T)%>%
-    as.data.frame()%>%t()
-  
-  chat <- cbind(chat[,1],
-                regmatches(chat[,2], regexpr(": ", chat[,2]),invert = T)%>%
-                  as.data.frame()%>%t())%>%as.data.frame()
-  
-  ####################################################################
-  
-  # Three checks if all the dates, of first column, are parsed.
-  
-  if (dmy_hms(chat[, 1], quiet = T) %>% is.na() %>% sum() == 0) {  
-    chat[, 1] <- dmy_hms(chat[, 1], quiet = T)
-  } else if (mdy_hm(chat[, 1], quiet = T) %>% is.na() %>% sum() == 0) {
-    chat[, 1] <- mdy_hm(chat[, 1], quiet = T)
-  } else if (dmy_hm(chat[, 1], quiet = T) %>% is.na() %>% sum() == 0) {
-    chat[, 1] <- dmy_hm(chat[, 1], quiet = T)
+
+dateparse<- function(x){
+  if (!(NA %in% dmy_hms(x, quiet = T))) {  
+    dmy_hms(x, quiet = T)
+  } else if (!(NA %in% mdy_hm(x, quiet = T))) {
+    mdy_hm(x, quiet = T)
+  } else if (!(NA %in% dmy_hm(x, quiet = T))) {
+    dmy_hm(x, quiet = T)
   } else { 
     stop ("all dates could not be parsed.")
   }
-  ####################################################################
-  
-  chat$V1 <- as.POSIXlt(chat$V1)
-  names(chat) <- c("V1", "V3", "text")
-  return(as.data.frame(chat))
+}
+
+WClean <- function(x) {
+  # Reading and initial cleaning phase
+  path_of_file<-x
+  chat <- readLines(path_of_file)
+  chat <- chat%>%
+    as_tibble()%>%
+    filter(!(str_detect(value, "end-to-end")|value == ""))%>%
+    mutate(grouping = cumsum(stringr::str_detect(value, "(\\d:\\d).+(?=\\s-\\s).+(?=:\\s)")))%>%
+    group_by(grouping)%>%
+    summarise(value = paste(value, collapse = " "))%>%
+    select(-grouping)%>%
+    separate(col = value, into = c("V1","V3","text"), sep = " - |:\\s",extra = "merge")%>%
+    mutate(V1 = dateparse(V1))
+  return(chat)
 }
 
 ###### counts first tab
