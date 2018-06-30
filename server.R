@@ -11,14 +11,14 @@ shinyServer(function(input, output) {
     validate(
       need(input$chatfile != "", "")
     )
-    p<-chat()[,2]%>% as.factor()%>%levels()%>%unique()
+    p<-chat()$V3%>%unique()
     textInput("name1",paste("Change name from", p[1],"to:",sep = " "), value = paste(p[1]))
   })
   output$namesinput2<-renderUI({
     validate(
       need(input$chatfile != "", "")
     )
-    p<-chat()[,2]%>% as.factor()%>%levels()%>%unique()
+    p<-chat()$V3%>%unique()
     textInput("name2",paste("Change name from", p[2],"to:",sep = " "), value = paste(p[2]))
   })
   output$OKfornames<-renderUI({
@@ -30,10 +30,11 @@ shinyServer(function(input, output) {
   chat2<-eventReactive(input$namesok,{
     withProgress({
       setProgress(message = "Please Wait...")
-      p<-as.data.frame(chat(),stringsAsFactors = T)
-      p[,2]<-as.factor(p[,2])
-      levels(p[,2])<-c(input$name1, input$name2)
-      as.data.frame(p,stringsAsFactors =F)
+      p<-chat()$V3%>%unique()
+      level_key = list(input$name1, input$name2)
+      names(level_key) = p
+      chat()%>%
+        mutate(V3 = recode(V3, !!!level_key))
     })
   })
   
@@ -55,7 +56,7 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()[,2]%>% as.factor()%>%levels()%>%unique()
+    p<-chat2()$V3%>%unique
     paste(p[1],"'s"," chat with ",p[2], sep = "")
   })
   output$total_word_count<- renderText({
@@ -65,8 +66,7 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>% as.data.frame()
-    p<-chat_word_count(p$text)
+    p<-chat_word_count(chat2()$text)
     as.character(p)
   })
   
@@ -79,8 +79,7 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()
-    p<-chat_letter_count(p$text)
+    p<-chat_letter_count(chat2()$text)
     as.character(p)
   })
   
@@ -91,8 +90,7 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>% as.data.frame()
-    p<-chat_message_count(p$text)
+    p<-chat_message_count(chat2()$text)
     as.character(p)
   })
   
@@ -103,8 +101,7 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>% as.data.frame()
-    p<-chat_total_days(p$V1)
+    p<-chat_total_days(chat2()$V1)
     as.character(p)
   })
   output$total_media_sent<-renderText({
@@ -114,8 +111,7 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>% as.data.frame()
-    p<-chat_media_items(p)
+    p<-chat_media_items(chat2())
     if(is.data.frame(p)){
     p<-sum(p$Frequency)
     as.character(p)} else {
@@ -129,10 +125,9 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>% as.data.frame()
-    p<-chat_most_active(p$V1)
-    p
+    chat_most_active(chat2()["V1"])
   })
+  
   output$leading_message_sender<-renderText({
     validate(
       need(input$chatfile != "", "Please select the chat file")
@@ -140,11 +135,7 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>% as.data.frame()
-    p<-chat_name_freq_pie(p)
-    paste(
-    p[order(p[,2],decreasing = T)[1],1],"#Messages",
-    p[order(p[,2],decreasing = T)[1],2])
+    paste(chat_name_freq_pie(chat2())[1,], collapse = " #Messages ")
   })
   output$most_emoji<- renderText({
     validate(
@@ -153,10 +144,9 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>%as.data.frame()
-    p<-chat_emoji_with_freq(p$text)
+    p<-chat_emoji_with_freq(chat2()["text"])
     if(is.data.frame(p)){
-    paste(p[1,1],p[1,2],"times",p[1,3])
+    paste(p$Name[1],p$emo_name[1],p$Frequency[1],"times")
     } else {
       p
     }
@@ -168,8 +158,7 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>%as.data.frame()
-    p<-chat_words_per_message(p$text)
+    p<-chat_words_per_message(chat2()$text)
     paste("No. of words,", p)
   })
   output$letters_per_message<- renderText({
@@ -179,8 +168,8 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>%as.data.frame()
-    p<-chat_letters_per_message(p$text)
+    
+    p<-chat_letters_per_message(chat()$text)
     paste("No. of letters,", p)
   })
   output$messages_per_day<- renderText({
@@ -190,8 +179,8 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>%as.data.frame()
-    p<-chat_message_per_day(p$V1)
+    
+    p<-chat_message_per_day(chat2()$V1)
     paste("No. of messages,", p)
   })
   output$messages_weekday<- renderTable({
@@ -201,8 +190,8 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-   p<-chat2()%>%as.data.frame()
-   p<-chat_weekdays_freq_pie(p)
+   
+   p<-chat_weekdays_freq_pie(chat2())
    p
   })
   output$messages_per_shift<- renderTable({
@@ -212,8 +201,8 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>%as.data.frame()
-    p<-chat_mshift_freq_pie(p)
+    
+    p<-chat_mshift_freq_pie(chat2())
     p
   })
   output$letters_per_day<- renderText({
@@ -223,8 +212,8 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>%as.data.frame()
-    p<-chat_letter_per_day(p)
+    
+    p<-chat_letter_per_day(chat2())
     paste(p,"letters inclusive of whitespaces")
   })
   output$p_chart_message_count<- renderPlotly({
@@ -234,8 +223,8 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>%as.data.frame()
-    plot_ly(chat_name_freq_pie(p), labels = ~Name, values = ~Frequency, type = 'pie',
+    chat_name_freq_pie(chat2())%>%
+      plot_ly(labels = ~Name, values = ~Frequency, type = 'pie',
             textposition = 'inside',
             textinfo = 'label+percent',
             insidetextfont = list(color = '#FFFFFF'),
@@ -255,10 +244,10 @@ shinyServer(function(input, output) {
       need(input$namesok, "Please click Ok")
     )
     input$justOK
-    p<-chat2()%>% as.data.frame()
-    p<-chat_mshift_freq_pie(p)
-      plot_ly(p, x= ~factor(V1, levels = unique(V1)),
-            y= ~as.numeric(V2), type = 'bar', name = 'dayshifts', 
+    
+    chat_mshift_freq_pie(chat2())%>%
+      plot_ly(x= ~factor(Shift, levels = unique(Shift)),
+            y= ~as.numeric(count), type = 'bar', name = 'dayshifts', 
             marker = list(color = sample(brewer.pal(4,"Set2"))))%>% 
       layout(title = 'Overall distribution of messages\nacross dayshifts\n',
              xaxis = list(
@@ -275,9 +264,8 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>% as.data.frame()
-    p<-chat_weekdays_freq_pie(p)
-    plot_ly(p, x= ~factor(V1, levels = unique(V1)), y = ~as.numeric(V2), type= 'bar',
+    chat_weekdays_freq_pie(chat2())%>%
+    plot_ly(x= ~factor(Weekday, levels = unique(Weekday)), y = ~as.numeric(count), type= 'bar',
             name = '#no. of messages', marker = list(color = sample(brewer.pal(7,"Set2"))))%>%
       layout(title = 'Overall message distribuition \nover weekdays\n',
              xaxis = list(
@@ -303,13 +291,13 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>% as.data.frame()
-    plot_ly(chat_word_freq_pie(p), labels = ~Name, values = ~Frequency, type = 'pie',
+    chat_word_freq_pie(chat2())%>%
+    plot_ly(labels = ~Name, values = ~count, type = 'pie',
             textposition = 'inside',
             textinfo = 'label+percent',
             insidetextfont = list(color = '#FFFFFF'),
             hoverinfo = 'text',
-            text = ~paste('#', Frequency, ' words'),
+            text = ~paste('#', count, ' words'),
             marker = list(colors = sample(brewer.pal(7,"Set2")),
                           line = list(color = '#362828', width = 1)),
             pull = 0.025,
@@ -323,13 +311,13 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>% as.data.frame()
-    plot_ly(chat_letter_freq_pie(p), labels = ~Name, values = ~Frequency, type = 'pie',
+    chat_letter_freq_pie(chat2())%>%
+    plot_ly(labels = ~Name, values = ~count, type = 'pie',
             textposition = 'inside',
             textinfo = 'label+percent',
             insidetextfont = list(color = '#FFFFFF'),
             hoverinfo = 'text',
-            text = ~paste('#', Frequency, ' Letters'),
+            text = ~paste('#', count, ' Letters'),
             marker = list(colors = sample(brewer.pal(7,"Set2")),
                           line = list(color = '#362828', width = 1)),
             pull = 0.025,
@@ -344,17 +332,7 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    validate(
-      need({
-        p<-chat2()%>%as.data.frame()
-        p<-chat_emoji_with_freq(p$text)
-        if(is.data.frame(p)){
-          paste(p[1,1],p[1,2],"times",p[1,3])
-        } 
-      }, message = "No Emoji Detected")
-    )
-    p<-chat2()%>%as.data.frame()
-    q<-chat_emoji_with_freq(p$text)[1:10,] %>%
+    chat_emoji_with_freq(chat2())[1:10,]%>%
       plot_ly(labels = ~Name, values = ~Frequency,width = "800px", height = "800px",
               textinfo = 'label',
               hoverinfo = 'label+text+percent',
@@ -375,12 +353,12 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>% as.data.frame()
-    plot_ly(data = chat_avg_ppwordl_freq_pie(p), labels = ~Name, values = ~Frequency, type = 'pie',
+    chat_avg_ppwordl_freq_pie(chat2())%>%
+    plot_ly(labels = ~Name, values = ~count, type = 'pie',
             textposition = 'inside',
             textinfo = 'label+percent',
             hoverinfo = 'text',
-            text = ~paste('Avg wordlength', Frequency),
+            text = ~paste('Avg wordlength', count),
             marker = list(colors = brewer.pal(5,"Set3")%>%sample(),
                           line = list(color = '#362828', width = 1)),
             pull = 0.025
@@ -394,9 +372,8 @@ shinyServer(function(input, output) {
       need(input$namesok, "Please click Ok")
     )
     input$justOK
-    p<-chat2()%>% as.data.frame()
-    chat_over_24_hours(p)%>%
-      plot_ly(x=~Var1, y = ~Freq, color = ~Var2,colors = sample(brewer.pal(3, "Dark2"))[1:2],type = "bar")%>%
+    chat_over_24_hours(chat2())%>%
+      plot_ly(x=~hour, y = ~count, color = ~Name,colors = sample(brewer.pal(3, "Dark2"))[1:2],type = "bar")%>%
       layout(title = "#Messages over 24 hours\nof the day",
              xaxis= list(
                title = "Hours of day ->"),
@@ -412,13 +389,13 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>% as.data.frame()
-    plot_ly(chat_convo_starter(p,(input$tconsider)*3600),labels= ~Name, values =~Frequency, type = 'pie',
+    chat_convo_starter(chat2(),(input$tconsider)*3600)%>%
+    plot_ly(labels= ~Name, values =~count, type = 'pie',
             textposition = 'inside',
             textinfo = 'label+percent',
             insidetextfont = list(color = '#FFFFFF'),
             hoverinfo = 'text',
-            text = ~paste('#', Frequency,' times'),
+            text = ~paste('#', count,' times'),
             marker = list(colors = sample(brewer.pal(5,"Dark2")),
                           line = list(color = '#362828', width = 1)),
             pull = 0.025,
@@ -432,8 +409,7 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-chat2()%>% as.data.frame()
-    chat_continue_conversation(p,((input$tconsider.convo)*60))
+    chat_continue_conversation(chat2(),((input$tconsider.convo)*60))
   })
   output$chat_table<- renderDataTable({
     validate(
@@ -442,7 +418,7 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-as.data.frame(chat2())
+    p<-chat2()
     names(p)<-c("Date & Time", "Name", "Text")
     p
   })
@@ -455,8 +431,7 @@ shinyServer(function(input, output) {
     )
     input$actionOK
     
-    p<-as.data.frame(chat2())
-    chat_string_count(x = p, string = isolate(input$string))
+    chat_string_count(x = chat2(), string = isolate(input$string))
   })
   ### render ui 
   output$word_UI<- renderUI({
@@ -466,19 +441,18 @@ shinyServer(function(input, output) {
     validate(
       need(input$namesok, "Please click Ok")
     )
-    p<-as.data.frame(chat2())
-    selectInput("cloudof", "Wordcloud of", choices = c(p$V3%>%as.factor()%>%levels(),"both"),selected = "both")
+    selectInput("cloudof", "Wordcloud of", choices = c(chat2()$V3%>%unique(),"both"),selected = "both")
   })
   ### repeatable wc
   wordcloud2_rep<-repeatable(wordcloud2)
   terms1<- eventReactive(input$cloudof,{
     withProgress({
       setProgress(message = "Please wait...")
-      y<-as.data.frame(chat2())
+      y<-chat2()
       if (nrow(y)<=11000){
       if (input$cloudof != "both"){
       y<-y$text[which(y$V3==input$cloudof)]
-      getTermMatrix(x= y)
+      getTermMatrix(x = y)
       } else {
         getTermMatrix(y$text)
       }

@@ -1,7 +1,7 @@
 
 
 ```{r,echo=FALSE , error = TRUE}
-    p<-chat2()[,2]%>% as.factor()%>%levels()%>%unique()
+    p<-chat2()$V3%>%unique
     paste(p[1],"'s"," chat with ",p[2], sep = "")%>%h3(align = "center", style= "color:blue")%>%em()
 ```
 
@@ -10,8 +10,7 @@
 `r h3("Total Word Count", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
-p<-chat2()%>% as.data.frame()
-    p<-chat_word_count(p$text)
+    p<-chat_word_count(chat2()$text)
     as.character(p)%>%h3(align = "center", style= "color:blue")%>%em()
 ```
 
@@ -20,8 +19,8 @@ p<-chat2()%>% as.data.frame()
 `r h3("Total Letter Count", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
- p<-chat2()%>% as.data.frame()
-    p<-chat_letter_count(p$text)
+ 
+    p<-chat_letter_count(chat2()$text)
     as.character(p)%>%h3(align = "center", style= "color:blue")%>%em()
 ```
 
@@ -30,8 +29,8 @@ p<-chat2()%>% as.data.frame()
 `r h3("Total Message Count", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
-p<-chat2()%>% as.data.frame()
-    p<-chat_message_count(p$text)
+
+    p<-chat_message_count(chat2()$text)
     as.character(p)%>%h3(align = "center", style= "color:blue")%>%em()
 ```
 
@@ -40,8 +39,8 @@ p<-chat2()%>% as.data.frame()
 `r h3("Total Chat Days", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
- p<-chat2()%>% as.data.frame()
-    p<-chat_total_days(p$V1)
+ 
+    p<-chat_total_days(chat2()$V1)
     as.character(p)%>%h3(align = "center", style= "color:blue")%>%em()
 ```
 
@@ -50,8 +49,8 @@ p<-chat2()%>% as.data.frame()
 `r h3("Total Media shared with each other", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
- p<-chat2()%>% as.data.frame()
-    p<-chat_media_items(p)
+ 
+    p<-chat_media_items(chat2())
     if(is.data.frame(p)){
     p<-sum(p$Frequency)
     as.character(p)%>%h3(align = "center", style= "color:blue")%>%em()
@@ -65,9 +64,7 @@ p<-chat2()%>% as.data.frame()
 `r h3("Most Active Day", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
- p<-chat2()%>% as.data.frame()
-    p<-chat_most_active(p$V1)
-    p%>%h3(align = "center", style= "color:blue")%>%em()
+    chat_most_active(chat2()["V1"])%>%h3(align = "center", style= "color:blue")%>%em()
 ```
 
 `r hr()`
@@ -75,11 +72,8 @@ p<-chat2()%>% as.data.frame()
 `r h3("Leading Message Sender", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
-p<-chat2()%>% as.data.frame()
-    p<-chat_name_freq_pie(p)
-    paste(
-    p[order(p[,2],decreasing = T)[1],1],"#Messages",
-    p[order(p[,2],decreasing = T)[1],2])%>%h3(align = "center", style= "color:blue")%>%em()
+
+    paste(chat_name_freq_pie(chat2())[1,], collapse = " #Messages ")%>%h3(align = "center", style= "color:blue")%>%em()
 ```
 
 `r hr()`
@@ -87,10 +81,9 @@ p<-chat2()%>% as.data.frame()
 `r h3("Most Used Emoji", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
-p<-chat2()%>%as.data.frame()
-    p<-chat_emoji_with_freq(p$text)
+    p<-chat_emoji_with_freq(chat2()["text"])
     if(is.data.frame(p)){
-    paste(p[1,1],p[1,2],"times",p[1,3])%>%h3(align = "center", style= "color:blue")%>%em()
+      paste(p$Name[1],p$emo_name[1],p$Frequency[1],"times")%>%h3(align = "center", style= "color:blue")%>%em()
     } else {
       p%>%h3(align = "center", style= "color:blue")%>%em()
     }
@@ -101,8 +94,7 @@ p<-chat2()%>%as.data.frame()
 `r h3("Words Typed Per Message", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
- p<-chat2()%>%as.data.frame()
-    p<-chat_words_per_message(p$text)
+    p<-chat_words_per_message(chat2()$text)
     paste("No. of words,", p)%>%h3(align = "center", style= "color:blue")%>%em()
 ```
 
@@ -111,8 +103,7 @@ p<-chat2()%>%as.data.frame()
 `r h3("Letters Typed Per Message", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
- p<-chat2()%>%as.data.frame()
-    p<-chat_letters_per_message(p$text)
+    p<-chat_letters_per_message(chat2()$text)
     paste("No. of letters,", p)%>%h3(align = "center", style= "color:blue")%>%em()
 ```
 
@@ -121,24 +112,21 @@ p<-chat2()%>%as.data.frame()
 `r h3("Messages Sent \nand\n Received Per Day", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
-p<-chat2()%>%as.data.frame()
-    p<-chat_message_per_day(p$V1)
+    p<-chat_message_per_day(chat2()$V1)
     paste("No. of messages,", p)%>%h3(align = "center", style= "color:blue")%>%em()
 ```
 `r hr()`
 
 `r h3("Letters Typed Per Day", style = "color:skyblue")`
 ```{r,echo=FALSE , error = TRUE}
-p<-chat2()%>%as.data.frame()
-    p<-chat_letter_per_day(p)
+    p<-chat_letter_per_day(chat2())
     paste(p,"letters inclusive of whitespaces")%>%h3(align = "center", style= "color:blue")%>%em()
 ```
 `r hr()`
 
 `r h3("No. of Messages by Individual", style = "color:skyblue")`
 ```{r,echo=FALSE , error = TRUE}
- p<-chat2()%>%as.data.frame()
-    plot_ly(chat_name_freq_pie(p), labels = ~Name, values = ~Frequency, type = 'pie',
+    plot_ly(chat_name_freq_pie(chat2()), labels = ~Name, values = ~Frequency, type = 'pie',
             textposition = 'inside',
             textinfo = 'label+percent',
             insidetextfont = list(color = '#FFFFFF'),
@@ -156,10 +144,10 @@ p<-chat2()%>%as.data.frame()
 `r h3("No. of Messages across Dayshifts", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
- p<-chat2()%>% as.data.frame()
-    p<-chat_mshift_freq_pie(p)
-      plot_ly(p, x= ~factor(V1, levels = unique(V1)),
-            y= ~as.numeric(V2), type = 'bar', name = 'dayshifts', 
+ 
+   chat_mshift_freq_pie(chat2())%>%
+      plot_ly(x= ~factor(Shift, levels = unique(Shift)),
+            y= ~as.numeric(count), type = 'bar', name = 'dayshifts', 
             marker = list(color = sample(brewer.pal(4,"Set2"))))%>% 
       layout(title = 'Overall distribution of messages\nacross dayshifts\n',
              xaxis = list(
@@ -174,9 +162,9 @@ p<-chat2()%>%as.data.frame()
 
 `r h3("#Messages Distribution Over Weekdays", style = "color:skyblue")`
 ```{r,echo=FALSE , error = TRUE}
- p<-chat2()%>% as.data.frame()
-    p<-chat_weekdays_freq_pie(p)
-    plot_ly(p, x= ~factor(V1, levels = unique(V1)), y = ~as.numeric(V2), type= 'bar',
+ 
+    chat_weekdays_freq_pie(chat2())%>%
+    plot_ly(x= ~factor(Weekday, levels = unique(Weekday)), y = ~as.numeric(count), type= 'bar',
             name = '#no. of messages', marker = list(color = sample(brewer.pal(7,"Set2"))))%>%
       layout(title = 'Overall message distribuition \nover weekdays\n',
              xaxis = list(
@@ -201,13 +189,13 @@ p<-chat2()%>%as.data.frame()
 `r h3("No. of Words By Individual", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
-p<-chat2()%>% as.data.frame()
-    plot_ly(chat_word_freq_pie(p), labels = ~Name, values = ~Frequency, type = 'pie',
+
+    plot_ly(chat_word_freq_pie(chat2()), labels = ~Name, values = ~count, type = 'pie',
             textposition = 'inside',
             textinfo = 'label+percent',
             insidetextfont = list(color = '#FFFFFF'),
             hoverinfo = 'text',
-            text = ~paste('#', Frequency, ' words'),
+            text = ~paste('#', count, ' words'),
             marker = list(colors = sample(brewer.pal(7,"Set2")),
                           line = list(color = '#362828', width = 1)),
             pull = 0.025,
@@ -220,13 +208,13 @@ p<-chat2()%>% as.data.frame()
 `r h3("No. of Letters By Individual", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
-p<-chat2()%>% as.data.frame()
-    plot_ly(chat_letter_freq_pie(p), labels = ~Name, values = ~Frequency, type = 'pie',
+
+    plot_ly(chat_letter_freq_pie(chat2()), labels = ~Name, values = ~count, type = 'pie',
             textposition = 'inside',
             textinfo = 'label+percent',
             insidetextfont = list(color = '#FFFFFF'),
             hoverinfo = 'text',
-            text = ~paste('#', Frequency, ' Letters'),
+            text = ~paste('#', count, ' Letters'),
             marker = list(colors = sample(brewer.pal(7,"Set2")),
                           line = list(color = '#362828', width = 1)),
             pull = 0.025,
@@ -239,8 +227,7 @@ p<-chat2()%>% as.data.frame()
 `r h3("Top 10 Emoji Distribution", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
-p<-chat2()%>%as.data.frame()
-    chat_emoji_with_freq(p$text)[1:10,] %>%
+    chat_emoji_with_freq(chat2()["text"])[1:10,] %>%
       plot_ly(labels = ~Name, values = ~Frequency,
               textinfo = 'label',
               hoverinfo = 'label+text+percent',
@@ -257,12 +244,12 @@ p<-chat2()%>%as.data.frame()
 `r h3("Average Wordlength by Individual", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
-p<-chat2()%>% as.data.frame()
-    plot_ly(data = chat_avg_ppwordl_freq_pie(p), labels = ~Name, values = ~Frequency, type = 'pie',
+
+    plot_ly(data = chat_avg_ppwordl_freq_pie(chat2()), labels = ~Name, values = ~count, type = 'pie',
             textposition = 'inside',
             textinfo = 'label+percent',
             hoverinfo = 'text',
-            text = ~paste('Avg wordlength', Frequency),
+            text = ~paste('Avg wordlength', count),
             marker = list(colors = brewer.pal(5,"Set3")%>%sample(),
                           line = list(color = '#362828', width = 1)),
             pull = 0.025
@@ -274,9 +261,9 @@ p<-chat2()%>% as.data.frame()
 `r h3("Distribution Of #Messages over\n24 Hours of the Day", style = "color:skyblue")`
 
 ```{r,echo=FALSE , error = TRUE}
- p<-chat2()%>% as.data.frame()
-    chat_over_24_hours(p)%>%
-      plot_ly(x=~Var1, y = ~Freq, color = ~Var2,colors = sample(brewer.pal(3, "Dark2"))[1:2],type = "bar")%>%
+ 
+    chat_over_24_hours(chat2())%>%
+      plot_ly(x= ~hour, y = ~count, color = ~Name,colors = sample(brewer.pal(3, "Dark2"))[1:2],type = "bar")%>%
       layout(title = "#Messages over 24 hours\nof the day",
              xaxis= list(
                title = "Hours of day ->"),
@@ -291,13 +278,13 @@ p<-chat2()%>% as.data.frame()
 `r paste("Taking Time Consideration of", input$tconsider, "hours")%>%h4(style= "color:grey", align = "right")%>%em()`
 
 ```{r,echo=FALSE , error = TRUE}
-    p<-chat2()%>% as.data.frame()
-    plot_ly(chat_convo_starter(p,(input$tconsider)*3600),labels= ~Name, values =~Frequency, type = 'pie',
+    
+    plot_ly(chat_convo_starter(chat2(),(input$tconsider)*3600),labels= ~Name, values =~count, type = 'pie',
             textposition = 'inside',
             textinfo = 'label+percent',
             insidetextfont = list(color = '#FFFFFF'),
             hoverinfo = 'text',
-            text = ~paste('#', Frequency,' times'),
+            text = ~paste('#', count,' times'),
             marker = list(colors = sample(brewer.pal(5,"Dark2")),
                           line = list(color = '#362828', width = 1)),
             pull = 0.025,
@@ -312,8 +299,8 @@ p<-chat2()%>% as.data.frame()
 
 
 ```{r,echo=FALSE , error = TRUE}
- p<-chat2()%>% as.data.frame()
-    chat_continue_conversation(p,((input$tconsider.convo)*60))%>%h3(style= "color:blue")%>%em()
+ 
+    chat_continue_conversation(chat2(),((input$tconsider.convo)*60))%>%h3(style= "color:blue")%>%em()
 ```
 
 `r hr()`
@@ -338,7 +325,7 @@ p<-chat2()%>% as.data.frame()
 `r h3("First 10 Chat Messages", style = "color:skyblue")`
 
 ```{r, echo=FALSE , error = TRUE}
-p<-chat2()%>%as.data.frame()
+p<-chat2()
 names(p)<-c("Date&time", "Participant", "Text")
 pander(p[1:10,])
 ```
