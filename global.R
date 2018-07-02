@@ -1,9 +1,4 @@
-######data clean function
-library(dplyr)
-library(stringr)
-library(data.table)
-
-
+# dateparsing function
 dateparse<- function(x){
   if (!(NA %in% dmy_hms(x, quiet = T))) {  
     dmy_hms(x, quiet = T, tz = Sys.timezone())
@@ -16,6 +11,7 @@ dateparse<- function(x){
   }
 }
 
+# Cleaning function for whatsapp text file
 WClean <- function(x) {
   # Reading and initial cleaning phase
   path_of_file<-x

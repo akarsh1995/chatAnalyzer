@@ -2,13 +2,15 @@ library(plotly)
 library(lubridate)
 library(RColorBrewer)
 library(shinythemes)
-library(data.table)
 library(pander)
 library(shiny)
 library(wordcloud2)
 library(digest)
 library(sunburstR)
-
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(data.table)
  shinyUI( 
    tagList
 (
