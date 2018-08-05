@@ -2,7 +2,7 @@
 
 ```{r,echo=FALSE , error = TRUE}
     p<-chat2()$V3%>%unique
-    paste(p[1],"'s"," chat with ",p[2], sep = "")%>%h3(align = "center", style= "color:blue")%>%em()
+    paste(p[1],"'s"," chat with ",p[2], sep = "")%>%h3(align = "center", style = "color:blue")%>%em()
 ```
 
 `r hr()`

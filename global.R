@@ -19,7 +19,7 @@ WClean <- function(x) {
   chat <- chat%>%
     as_tibble()%>%
     filter(!(str_detect(value, "end-to-end")|value == ""))%>%
-    mutate(grouping = cumsum(stringr::str_detect(value, "(\\d:\\d).+(?=\\s-\\s).+(?=:\\s)")))%>%
+    mutate(grouping = cumsum(stringr::str_detect(value, "^\\d.+(\\d:\\d).+(?=\\s-\\s).+(?=:\\s)")))%>%
     group_by(grouping)%>%
     summarise(value = paste(value, collapse = " "))%>%
     select(-grouping)%>%
