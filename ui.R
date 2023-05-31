@@ -5,24 +5,25 @@ library(shinythemes)
 library(pander)
 library(shiny)
 library(wordcloud2)
-library(digest)
 library(sunburstR)
-library(tidyr)
 library(dplyr)
 library(stringr)
-library(data.table)
+library(tidyr)
+
  shinyUI( 
    tagList
 (
   shinythemes::themeSelector(),
   navbarPage(
       
-    "S.sirAkarsh's chatAnalyzer (WhatsApp and Hike)",header = h3(em(textOutput("names")), style = paste0("color:", RColorBrewer::brewer.pal(8, "Dark2")%>%sample(size = 1))),
+    "Chat Analyzer WhatsApp",header = h3(em(textOutput("names")), style = paste0("color:", RColorBrewer::brewer.pal(8, "Dark2")%>%sample(size = 1))),
    
      tabPanel("Overall Stats",
              sidebarPanel(
                
-         fileInput("chatfile", "ChatFile input:",accept = "text"),
+         fileInput("chatfile", "ChatFile input:", accept = "text"),
+         actionButton("loadSampleChat", "Click to load sample input file."),
+         # tags$a
          tags$a("Learn how to export whatsapp chat text file from whatsapp",href = "https://www.whatsapp.com/faq/en/general/23753886",target = "_blank")%>%h5(align = "center")%>%em(),
          tags$hr(),
          hr(),
@@ -134,13 +135,11 @@ library(data.table)
                 hr(),
                 helpText("Minimum Frequency refers to the minimum number of times a word has occured in chat",align = "justify"),
                 code("Try adjusting below slider in case wordcloud doesn't appear"), 
-                sliderInput("minfreq",label = "Minimum Frequency of words",min = 1,max = 100,
-                             step = 1,ticks = T,value = 1),
+                uiOutput('minfreqUI'),
                 hr(),
                 code("Try adjusting above slider in case wordcloud doesn't appear"),
                 helpText("Maximum number of words to display for given frequncy"),
-                 sliderInput("maxwords", label = "Maximum Number of Words",min = 2,
-                             max = 300,step = 1,ticks = T,value = 100),
+                uiOutput('maxwordsUI'),
                 hr(), 
                 selectInput("shape", "Shape", c("star","circle","cardioid","diamond","triangle-forward",
                                                  "triangle","pentagon"),selected = "star"),

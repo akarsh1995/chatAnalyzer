@@ -1,4 +1,13 @@
-# dateparsing function
+######data clean function
+##### Wordcloud Function 
+library(memoise)
+library(tm)
+library(wordcloud2)
+
+options(browser="firefox")
+
+
+
 dateparse<- function(x){
   if (!(NA %in% dmy_hms(x, quiet = T))) {  
     dmy_hms(x, quiet = T, tz = Sys.timezone())
@@ -11,7 +20,6 @@ dateparse<- function(x){
   }
 }
 
-# Cleaning function for whatsapp text file
 WClean <- function(x) {
   # Reading and initial cleaning phase
   path_of_file<-x
@@ -19,7 +27,7 @@ WClean <- function(x) {
   chat <- chat%>%
     as_tibble()%>%
     filter(!(str_detect(value, "end-to-end")|value == ""))%>%
-    mutate(grouping = cumsum(stringr::str_detect(value, "^\\d.+(\\d:\\d).+(?=\\s-\\s).+(?=:\\s)")))%>%
+    mutate(grouping = cumsum(stringr::str_detect(value, "\\d\\d?[-\\/]\\d\\d?[-\\/]\\d{2,4}")))%>%
     group_by(grouping)%>%
     summarise(value = paste(value, collapse = " "))%>%
     select(-grouping)%>%
@@ -233,7 +241,7 @@ chat_continue_conversation<- function(x=chat, t.consider=360){
   x<-x%>%
     select(V1, Name = V3)%>%
     mutate(timegap = V1-lag(V1))%>%
-    mutate(timegap = c(if_else(timegap[2]<=t.consider, true = timegap[2], false = t.consider+1),timegap[-1]))%>%
+    mutate(timegap = c(if_else(timegap[2]<=t.consider, true = as.numeric(timegap[2]), false = t.consider+1),timegap[-1]))%>%
     mutate(grouping = cumsum(timegap > t.consider))%>%
     group_by(grouping)%>%
     mutate(diff_f_l = last(V1)-first(V1))%>%
@@ -262,10 +270,6 @@ chat_string_count<-function(x= chat, string = "hello"){
     summarise(count = sum(count))
   }
 
-##### Wordcloud Function 
-library(memoise)
-library(tm)
-library(wordcloud2)
 getTermMatrix<-memoise(function(x=chat$text){
   myCorpus = Corpus(VectorSource(x))
   myCorpus = tm_map(myCorpus, content_transformer(tolower))

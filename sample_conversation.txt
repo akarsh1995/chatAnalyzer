@@ -1,0 +1,104 @@
+24/11/18, 21:33 -  Alice: Hi Bob, how are you doing today?
+24/11/18, 22:40 -  Bob: I'm good, thanks for asking. How about you?
+26/12/18, 01:59 -  Alice: I'm doing great, thanks. So, have you heard about the new movie that's coming out next week?
+26/12/18, 02:00 -  Bob: Oh yeah, I heard it's a superhero movie. I'm really excited to watch it. Are you planning to go?
+03/01/19, 16:08 -  Alice: Definitely! I already bought the tickets. It's going to be epic. Want to join me?
+05/01/19, 16:44 -  Bob: That sounds awesome. Count me in. By the way, have you tried that new restaurant in town?
+07/01/19, 00:10 -  Alice: Not yet. Is it any good?
+07/01/19, 00:17 -  Bob: Oh, it's amazing. The food there is delicious. We should definitely go there sometime.
+23/01/19, 23:10 -  Alice: Sounds like a plan. We'll have to make a reservation then. What day works for you?
+16/02/19, 20:43 -  Bob: How about next Saturday evening? Does that work for you?
+16/02/19, 20:46 -  Alice: Perfect! Saturday evening it is. I'll make the reservation today.
+16/02/19, 20:46 -  Bob: Great, looking forward to it. So, what else is new with you?
+16/02/19, 20:46 -  Alice: Well, I recently started a new job. It's challenging, but I'm enjoying it so far.
+16/02/19, 20:46 -  Bob: That's fantastic. What kind of work are you doing?
+16/02/19, 20:46 -  Alice: I'm working as a software engineer at a tech company. It's a fast-paced environment, but I love it.
+16/02/19, 20:46 -  Bob: That's really cool. I've always been interested in technology. What's the latest trend in the tech world?
+16/02/19, 20:46 -  Alice: Artificial intelligence and machine learning are really hot topics right now. Companies are investing heavily in them.
+16/02/19, 20:46 -  Bob: Yeah, I've heard about AI. It's fascinating how it's being used in various industries. It's definitely the future.
+16/02/19, 20:46 -  Alice: Absolutely. It's amazing how AI is revolutionizing healthcare, finance, and even customer service.
+16/02/19, 20:46 -  Bob: Speaking of customer service, have you ever used those chatbots on websites?
+16/02/19, 20:46 -  Alice: Yeah, I have. Some of them are quite helpful, but others can be a bit frustrating.
+16/02/19, 20:46 -  Bob: I agree. It's convenient when they can answer your questions, but it can be annoying when they can't understand you properly.
+16/02/19, 20:46 -  Alice: Exactly. Sometimes it feels like you're talking to a robot rather than a real person.
+16/02/19, 20:46 -  Bob: True. I guess there's still a long way to go before chatbots can truly replace human interaction.
+16/02/19, 20:46 -  Alice: Definitely. But who knows, with advancements in AI, they might become even better in the future.
+16/02/19, 20:46 -  Bob: That's true. Technology is constantly evolving, and it's exciting to see what the future holds.
+16/02/19, 20:46 -  Alice: Absolutely. So, what are your plans for the weekend, apart from the movie and dinner?
+16/02/19, 20:46 -  Bob: I don't have any specific plans yet. Maybe I'll catch up on some reading or spend time with friends.
+16/02/19, 20:46 -  Alice: Sounds like a relaxing weekend. I might do some hiking if the weather is nice.
+16/02/19, 20:46 -  Bob: <Media omitted>
+16/02/19, 20:46 -  Alice: <Media omitted>
+16/02/19, 20:46 -  Bob: <Media omitted>
+16/02/19, 20:46 -  Alice: <Media omitted>
+16/02/19, 20:46 -  Bob: <Media omitted>
+16/02/19, 20:46 -  Alice: <Media omitted>
+16/02/19, 20:46 -  Bob: That sounds wonderful. Nature always has a way of rejuvenating us.
+16/02/19, 20:46 -  Alice: It does. It's good to take a break from technology and enjoy the beauty of the natural world.
+16/02/19, 21:16 -  Bob: I couldn't agree more. We should all take time to disconnect and recharge every now and then.
+19/02/19, 09:58 -  Alice: Absolutely. It's all about finding a balance in this fast-paced digital age.
+19/02/19, 10:00 -  Bob: Well said, Alice. So, is there anything else you want to talk about?
+19/02/19, 10:00 -  Alice: Not at the moment. It was great catching up with you, Bob.
+19/02/19, 10:00 -  Bob: Likewise, Alice. Let's keep in touch and have a fantastic weekend.
+19/02/19, 10:00 -  Alice: Will do. Take care, Bob!
+19/02/19, 10:00 -  Bob: Hey, Alice! Good to see you again. How was your weekend?
+19/02/19, 10:01 -  Alice: Hi, Bob! It was fantastic. I went hiking as planned. The weather was perfect, and the scenery was breathtaking. How about you? How was your weekend?
+19/02/19, 10:01 -  Bob: My weekend was great too. I caught up on some reading and also spent time with friends. It was a nice balance of relaxation and socializing. Did you watch the movie you mentioned last time?
+19/02/19, 10:01 -  Alice: Yes, I did! It was incredible. The special effects were mind-blowing, and the storyline kept me on the edge of my seat. You should definitely check it out if you get the chance.
+19/02/19, 10:01 -  Bob: That sounds amazing. I'll definitely make time to watch it. By the way, did you make the reservation at the new restaurant for Saturday evening?
+19/02/19, 10:01 -  Alice: Yes, I did. I made a reservation for two at 7 p.m. It's supposed to be a popular spot, so I wanted to make sure we secured a table. I hope you're hungry!
+19/02/19, 10:01 -  Bob: That's great! I'm definitely looking forward to trying out their delicious food. Thanks for making the reservation. I'm sure we'll have a fantastic evening.
+19/02/19, 10:01 -  Alice: You're welcome, Bob. I'm glad you're excited about it. It's always fun exploring new culinary experiences. Oh, speaking of new things, have you heard about the upcoming technology conference in town next month?
+19/02/19, 10:01 -  Bob: Yes, I have! It's supposed to be a big event with renowned speakers and interesting workshops. I'm thinking of attending. Are you planning to go?
+19/02/19, 10:01 -  Alice: Absolutely! I've already registered for it. It's a great opportunity to stay updated on the latest trends and network with professionals in the industry. We should definitely go together.
+19/02/19, 10:01 -  Bob: That sounds like a plan. Attending the conference together would be fantastic. We can learn and explore together, and it will also be a chance to spend more time outside of work. I'm in!
+19/02/19, 10:02 -  Alice: Great! We'll make a note to coordinate our schedules and plan the sessions we want to attend. It'll be an enriching experience, and I'm sure we'll gain valuable insights.
+19/02/19, 10:02 -  Bob: Definitely. I'm looking forward to it. It's always refreshing to be surrounded by like-minded individuals and to engage in meaningful discussions about technology and innovation.
+19/02/19, 10:02 -  Alice: I couldn't agree more, Bob. It's inspiring to see how technology is shaping the world and how we can contribute to its development. This conference will be a great platform for that.
+19/02/19, 10:02 -  Bob: Absolutely. It's incredible to witness the rapid advancements and the positive impact technology is having on various industries. I'm grateful to be a part of this exciting era.
+19/02/19, 10:02 -  Alice: Same here, Bob. We're fortunate to be working in a field that constantly pushes the boundaries of what's possible. It keeps us on our toes and fuels our passion for innovation.
+20/02/19, 15:55 -  Bob: Couldn't have said it better, Alice. We're living in an age of endless opportunities, and I believe we have the potential to make a significant difference through our work.
+20/02/19, 15:58 -  Alice: Indeed, Bob. Let's continue to learn, grow, and make a positive impact in our respective roles. Together, we can contribute to shaping a better future.
+20/02/19, 15:58 -  Bob: Absolutely, Alice. Let's seize every opportunity and embrace the challenges that come our way. With our skills and determination, we can achieve great things.
+20/02/19, 15:58 -  Alice: I couldn't agree more, Bob. Here's to an exciting journey ahead filled with innovation, collaboration, and making a difference. Cheers!
+20/02/19, 15:58 -  Bob: Cheers, Alice! To a bright future and making a lasting impact. Let's make it happen!
+20/02/19, 16:08 -  Alice: <Media omitted>
+20/02/19, 16:58 -  Bob: <Media omitted>
+20/02/19, 17:04 -  Alice: <Media omitted>
+22/02/19, 23:04 -  Bob: <Media omitted>
+22/02/19, 23:17 -  Bob: <Media omitted>
+22/02/19, 23:17 -  Alice: Let's do it, Bob! Together, we'll create waves of change.
+22/02/19, 23:17 -  Bob: Hey Alice, have you heard about the new tech stack that's gaining a lot of popularity lately? It's called Next.js.
+22/02/19, 23:17 -  Alice: Oh yes, I've been hearing a lot about Next.js. It's a framework for building server-side rendered and static websites using React, right?
+22/02/19, 23:17 -  Bob: That's correct! Next.js brings a lot of advantages to the table. It offers server-side rendering out of the box, which means faster page loads and better SEO.
+22/02/19, 23:17 -  Alice: That's impressive. I've heard that it also has a great developer experience. Is it easy to get started with Next.js?
+22/02/19, 23:17 -  Bob: Absolutely. Next.js provides a lot of built-in features that make development more efficient. It has automatic code splitting, hot module replacement, and even supports TypeScript out of the box.
+22/02/19, 23:17 -  Alice: That sounds fantastic. I've been meaning to explore TypeScript more, and if Next.js supports it seamlessly, that's even better. Are there any notable companies using Next.js?
+22/02/19, 23:17 -  Bob: Definitely. Next.js is used by several big companies, including Netflix, Airbnb, and Uber. It's reassuring to see such heavyweights relying on Next.js for their web applications.
+22/02/19, 23:17 -  Alice: Wow, that's quite impressive. It shows that Next.js is a reliable and scalable choice for building high-performance web applications. I'm definitely intrigued to learn more about it.
+22/02/19, 23:17 -  Bob: You should definitely give it a try, Alice. Next.js also has a vibrant and supportive community. There are plenty of tutorials, documentation, and open-source projects to help you get started.
+22/02/19, 23:17 -  Alice: That's great to know. I find it valuable to have a strong community when diving into a new technology. It makes it easier to learn, collaborate, and solve problems along the way.
+22/02/19, 23:17 -  Bob: Absolutely. Having a community that shares knowledge and supports each other can make a significant difference in our growth as developers. It's always beneficial to be a part of such a community.
+22/02/19, 23:17 -  Alice: I couldn't agree more, Bob. So, do you have any specific project in mind where Next.js could be a good fit?
+22/02/19, 23:18 -  Bob: Actually, yes. I'm working on a project that requires server-side rendering for improved performance and SEO. Next.js seems like a perfect fit for it. I'm excited to dive deeper into it.
+22/02/19, 23:19 -  Alice: That sounds like an exciting project, Bob. With Next.js, you'll be able to achieve your performance and SEO goals efficiently. I can't wait to see what you'll build with it.
+22/02/19, 23:19 -  Bob: Thanks, Alice. I'll keep you updated on the progress. And hey, if you ever decide to give Next.js a try, feel free to reach out. We can exchange ideas and learn from each other.
+22/02/19, 23:19 -  Alice: Absolutely, Bob. I appreciate the offer. Collaboration and knowledge sharing are the keys to growth and innovation. Let's definitely keep each other in the loop.
+27/02/19, 22:57 -  Bob: Sounds like a plan, Alice. Together, we can explore the power of Next.js and leverage its capabilities to build exceptional web applications.
+27/02/19, 22:57 -  Alice: Definitely, Bob. Let's embrace Next.js and unlock its potential. I'm excited about the possibilities it brings to the table.
+27/02/19, 22:57 -  Bob: Me too, Alice. Here's to our journey with Next.js, where we'll create amazing web experiences and push the boundaries of what's possible.
+27/02/19, 22:57 -  Alice: Cheers to that, Bob! I'm looking forward to it. Let's make Next.js a part of our tech stack and pave the way for innovative web development.
+27/02/19, 22:57 -  Bob: Absolutely, Alice. Here's to a future filled with Next.js-powered projects and continuous growth. Let's make it happen!
+27/02/19, 22:57 -  Alice: Let's do it, Bob! Together, we'll embrace Next.js and elevate our web development game. Exciting times lie ahead!
+27/02/19, 22:57 -  Bob: Indeed, Alice. Exciting times indeed. Let's get started and make our mark with Next.js.
+27/02/19, 22:57 -  Bob: <Media omitted>
+27/02/19, 22:57 -  Alice: <Media omitted>
+27/02/19, 22:57 -  Bob: <Media omitted>
+27/02/19, 22:57 -  Alice: <Media omitted>
+27/02/19, 22:57 -  Bob: <Media omitted>
+27/02/19, 22:57 -  Alice: <Media omitted>
+27/02/19, 22:57 -  Bob: <Media omitted>
+27/02/19, 22:57 -  Alice: <Media omitted>
+27/02/19, 22:57 -  Bob: <Media omitted>
+27/02/19, 22:57 -  Alice: <Media omitted>
+27/02/19, 22:57 -  Bob: <Media omitted>
