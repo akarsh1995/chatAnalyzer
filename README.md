@@ -25,7 +25,8 @@ install.packages(
         "tm",
         "wordcloud2"
     ) 
-)```
+)
+```
 
 # Run the app
 
